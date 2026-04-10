@@ -14,19 +14,19 @@ A Python full-stack web application built with Django, PostgreSQL, OpenCV, and D
 
 ```text
 munnaproject/
-+-- core/
-+-- static/
-�   +-- css/app.css
-�   +-- js/dashboard.js
-+-- study_assistant/
-+-- templates/
-�   +-- auth/
-�   +-- base.html
-�   +-- dashboard.html
-+-- .env.example
-+-- manage.py
-+-- requirements.txt
-+-- README.md
+├── core/
+├── static/
+│   ├── css/app.css
+│   └── js/dashboard.js
+├── study_assistant/
+├── templates/
+│   ├── auth/
+│   ├── base.html
+│   └── dashboard.html
+├── .env.example
+├── manage.py
+├── requirements.txt
+└── README.md
 ```
 
 ## Features
@@ -113,10 +113,5 @@ Open `http://127.0.0.1:8000/`
 - If DeepFace is unavailable or disabled, the app falls back to simulated emotion data.
 - The older React/FastAPI scaffold is not the active implementation now; use the Django app in the repo root.
 
-# studyguardian
-git init
-git add README.md
-git commit -m "first commit"
-git branch -M main
-git remote add origin https://github.com/GANESH2490/studyguardian.git
-git push -u origin main
+# Study Guardian
+An AI-based study assistant application.
