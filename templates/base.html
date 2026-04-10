@@ -1,0 +1,108 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Emotion-Aware Study Assistant{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'css/app.css' %}?v=20260403-premium" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3"></script>
+    <style>
+      :root { --font-heading: 'Outfit', sans-serif; --font-body: 'Inter', sans-serif; }
+      h1, h2, h3, h4, .brand-mark, .eyebrow, .nav-item { font-family: var(--font-heading); }
+      body { font-family: var(--font-body); }
+    </style>
+  </head>
+  <body>
+    <svg style="display:none;">
+      <filter id="noiseFilter">
+        <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" stitchTiles="stitch" />
+        <feColorMatrix type="saturate" values="0" />
+      </filter>
+    </svg>
+    <div class="background-graphics" aria-hidden="true">
+      <span class="bg-orb orb-a"></span>
+      <span class="bg-orb orb-b"></span>
+      <span class="bg-orb orb-c"></span>
+      <span class="bg-grid"></span>
+      <span class="bg-noise"></span>
+    </div>
+    <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+    <div class="page-shell">
+      {% if messages %}
+        <div class="flash-stack">
+          {% for message in messages %}
+            <div class="flash-message">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% if request.user.is_authenticated %}
+      <main class="dashboard-shell" data-theme-value="{{ profile.theme_preference }}">
+        <aside class="sidebar glass-card reveal">
+          <div class="sidebar-scroll">
+            <div class="brand-lockup">
+              <div class="brand-mark">AS</div>
+              <div>
+                <p class="eyebrow">Adaptive AI</p>
+                <h2>Study Assistant</h2>
+              </div>
+            </div>
+
+            <nav class="nav-list">
+              <a class="nav-item {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'dashboard' %}">Overview</a>
+              <a class="nav-item {% if request.resolver_match.url_name == 'study_lab' %}active{% endif %}" href="{% url 'study_lab' %}">Study Lab</a>
+              <a class="nav-item {% if request.resolver_match.url_name == 'focus_zone' %}active{% endif %}" href="{% url 'focus_zone' %}">Focus Zone</a>
+              <a class="nav-item {% if request.resolver_match.url_name == 'analytics' %}active{% endif %}" href="{% url 'analytics' %}">Analytics</a>
+              <a class="nav-item {% if request.resolver_match.url_name == 'guardian_connect' %}active{% endif %}" href="{% url 'guardian_connect' %}">Guardian</a>
+            </nav>
+          </div>
+
+          <div class="sidebar-footer">
+            <div class="user-snippet">
+              <div class="user-avatar">{{ request.user.username|make_list|first|upper }}</div>
+              <div class="user-info">
+                <strong>{{ request.user.first_name|default:request.user.username }}</strong>
+                <p class="muted">Active Learner</p>
+              </div>
+            </div>
+            <form method="post" action="{% url 'logout' %}" class="logout-form">
+              {% csrf_token %}
+              <button type="submit" class="logout-button ghost-link">
+                <span>Sign Out</span>
+              </button>
+            </form>
+          </div>
+        </aside>
+
+        <section class="dashboard-content">
+          <header class="topbar glass-card reveal">
+            <div>
+              <p class="muted">Academic Integrity & Support</p>
+              <h1>
+                {% if request.resolver_match.url_name == 'dashboard' %}Smart Dashboard
+                {% elif request.resolver_match.url_name == 'study_lab' %}AI Study Lab
+                {% elif request.resolver_match.url_name == 'assessment_center' %}Assessment Center
+                {% elif request.resolver_match.url_name == 'focus_zone' %}Focus Zone
+                {% elif request.resolver_match.url_name == 'analytics' %}Performance Insights
+                {% elif request.resolver_match.url_name == 'guardian_connect' %}Guardian Connect
+                {% endif %}
+              </h1>
+            </div>
+            <div class="topbar-actions">
+              <button id="themeToggle" class="secondary-button" type="button">Toggle Theme</button>
+            </div>
+          </header>
+          {% block content %}{% endblock %}
+        </section>
+      </main>
+      {% else %}
+        {% block guest_content %}{% endblock %}
+      {% endif %}
+    </div>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

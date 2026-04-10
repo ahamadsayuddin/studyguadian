@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Analytics | Adaptive Study Assistant{% endblock %}
+
+{% block content %}
+<section id="analytics" class="chart-grid">
+  <article class="glass-card chart-card reveal">
+    <p class="muted">Study time</p>
+    <h3>Weekly focus intensity</h3>
+    <canvas id="studyChart"></canvas>
+  </article>
+  <article class="glass-card chart-card reveal">
+    <p class="muted">Mood trends</p>
+    <h3>Confidence and energy rhythm</h3>
+    <div style="text-align: center; margin-bottom: 1rem;">
+      <span class="eyebrow">Current State:</span> 
+      <strong style="color: var(--brand-mint)">{{ latest_emotion|upper }}</strong>
+    </div>
+    <canvas id="moodChart"></canvas>
+  </article>
+</section>
+
+<section class="glass-card reveal" style="margin-top: 2rem;">
+  <div class="section-heading">
+    <p class="muted">AI Recommendations</p>
+    <h3>Personalized Study Tips</h3>
+  </div>
+  <div id="recommendations-list" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; padding: 1rem;">
+    <!-- Recs will be loaded via JS -->
+  </div>
+</section>
+
+{{ weekly_study_time_json|json_script:"weeklyStudyData" }}
+{{ mood_trends_json|json_script:"moodTrendData" }}
+{{ recommendations_json|json_script:"recommendationData" }}
+{% csrf_token %}
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/dashboard.js' %}?v=20260403"></script>
+{% endblock %}

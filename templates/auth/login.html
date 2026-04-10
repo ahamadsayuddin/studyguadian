@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Login | Emotion-Aware Study Assistant{% endblock %}
+
+{% block guest_content %}
+<main class="auth-shell auth-shell--login">
+  <section class="auth-hero auth-hero--cinematic glass-card auth-reveal">
+    <div class="hero-badge">Adaptive AI Workspace</div>
+    <h1>Login into a study experience that moves with your focus.</h1>
+    <p>
+      Personalized suggestions, mood-aware coaching, immersive Pomodoro flow, and premium visuals built to keep you in deep work.
+    </p>
+    <div class="feature-grid">
+      <article>Live emotion intelligence</article>
+      <article>Focus rhythm tracking</article>
+      <article>Cinematic motion UI</article>
+      <article>Ambient productivity scenes</article>
+    </div>
+    <div class="auth-trust-row">
+      <article class="auth-trust-card">
+        <span>Sessions Completed</span>
+        <strong>12.5K+</strong>
+      </article>
+      <article class="auth-trust-card">
+        <span>Average Focus Lift</span>
+        <strong>38%</strong>
+      </article>
+      <article class="auth-trust-card">
+        <span>Weekly Active Learners</span>
+        <strong>1.9K</strong>
+      </article>
+    </div>
+    <div class="hero-rings" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </section>
+
+  <section class="auth-panel auth-panel--login glass-card auth-reveal">
+    <div class="auth-panel-head">
+      <div class="hero-badge">Welcome Back</div>
+      <h2>Sign in to your study cockpit</h2>
+      <p class="muted">Your adaptive dashboard is waiting.</p>
+    </div>
+    <form method="post" class="auth-form auth-form--login">
+      {% csrf_token %}
+      <label class="field-group">
+        <span>Username</span>
+        {{ form.username }}
+      </label>
+      <label class="field-group">
+        <span>Password</span>
+        {{ form.password }}
+      </label>
+      <button type="submit" class="primary-button login-submit">Enter Dashboard</button>
+    </form>
+    <p class="auth-switch">Need an account? <a href="{% url 'signup' %}">Create one</a></p>
+  </section>
+</main>
+{% endblock guest_content %}
+
+{% block scripts %}
+<script src="{% static 'js/auth.js' %}?v=20260330-6"></script>
+{% endblock %}

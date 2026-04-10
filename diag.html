@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; }
+        .mermaid { background: white; padding: 20px; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <div class="mermaid">
+graph TD
+    %% Main Project Container
+    subgraph Root ["munnaproject (Project Root)"]
+        
+        %% Config/Settings
+        subgraph Config ["Study Assistant Config"]
+            SA["study_assistant/"] 
+            SA_Set["settings.py"]
+            SA_Urls["urls.py"]
+            SA_WSGI["wsgi.py / asgi.py"]
+        end
+
+        %% Core Application
+        subgraph CoreApp ["Core Application"]
+            CR["core/"]
+            CR_Mod["models.py"]
+            CR_View["views.py"]
+            CR_Svc["services.py"]
+            CR_Sig["signals.py"]
+            CR_Form["forms.py"]
+            CR_Urls["urls.py"]
+        end
+
+        %% Frontend
+        subgraph Frontend ["Frontend & UI"]
+            TPL["templates/"]
+            TPL_B["base.html"]
+            TPL_A["auth/"]
+            TPL_D["dashboard.html"]
+            TPL_S["study_lab.html"]
+            
+            STA["static/"]
+            STA_JS["js/"]
+            STA_CSS["css/"]
+        end
+
+        %% Environment & Data
+        subgraph Data ["Env & Data"]
+            DB["db.sqlite3"]
+            ENV[".env"]
+            REQ["requirements.txt"]
+        end
+
+    end
+
+    %% Connections
+    SA_Urls --> CR_Urls
+    CR_View --> CR_Mod
+    CR_View --> CR_Svc
+    CR_View --> TPL
+    TPL --> STA
+    CR_Svc --> ENV
+    </div>
+</body>
+</html>

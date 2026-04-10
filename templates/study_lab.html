@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Study Lab | Adaptive Study Assistant{% endblock %}
+
+{% block content %}
+<section id="document-lab" class="glass-card ai-assistant-card reveal" data-upload-url="{% url 'upload_document' %}" data-mcq-url="{% url 'generate_mcq' %}">
+  <div class="section-heading">
+    <div>
+      <p class="muted">Upload & Analyze</p>
+      <h3>Document Study & Explanation</h3>
+    </div>
+    <div class="icon-chip">Doc</div>
+  </div>
+  <div class="ai-assistant-layout">
+    <div class="ai-chat-panel">
+      <form class="ai-chat-form" id="documentUploadForm">
+        <label for="documentInput" class="muted">Select a document (Txt/PDF):</label>
+        <input type="file" id="documentInput" accept=".pdf,.txt" required style="color:var(--text-primary); margin: 10px 0;"/>
+        <div class="button-row">
+          <button type="submit" class="primary-button" id="uploadDocumentButton">Upload & Explain</button>
+        </div>
+      </form>
+      <div class="ai-chat-log" id="documentExplanationBox" style="margin-top:20px;display:none;">
+        <article class="ai-message ai-message--assistant">
+          <span class="ai-message-role">AI Explanation</span>
+          <p id="explanationText" style="white-space: pre-wrap; font-size:14px; color:var(--text-secondary);"></p>
+        </article>
+      </div>
+    </div>
+    <aside class="ai-prompt-panel" id="mcqGeneratorPanel" style="display:none;">
+      <p class="muted">Generate MCQ Test</p>
+      <div class="ai-prompt-list">
+        <label class="muted">Number of MCQs:</label>
+        <input type="number" id="mcqCountInput" value="10" min="5" max="100" style="padding: 10px; width:100%; margin-bottom: 10px; background: transparent; border: 1px solid var(--border-subtle); color: var(--text-primary); border-radius:6px;"/>
+        <button class="primary-button" type="button" id="generateMcqButton" style="width:100%">Generate Test</button>
+      </div>
+      <p class="ai-helper-copy" style="margin-top:10px;">
+        Test will be available in the Assessment Center once generated.
+      </p>
+    </aside>
+  </div>
+</section>
+
+<section class="double-grid" style="margin-top:2rem;">
+  <article id="malfunction-lab" class="glass-card feature-card reveal">
+    <div class="card-heading">
+      <div>
+        <p class="muted">Secure Testing</p>
+        <h3>Malfunction Analyzer</h3>
+      </div>
+      <div class="icon-chip">Sec</div>
+    </div>
+    <div class="camera-frame" id="cameraFrame">
+      <video id="cameraPreview" autoplay playsinline muted></video>
+      <div class="camera-empty" id="cameraEmpty">Enable webcam to start testing.</div>
+    </div>
+    <p class="muted" style="font-size: 0.8em; margin-top: 5px;">*If a mobile phone is detected, your test will auto-submit!*</p>
+    <div class="button-row">
+      <button type="button" class="secondary-button" id="toggleCameraButton">Enable Camera</button>
+    </div>
+    <div class="emotion-result" id="malfunctionResult" style="display:none; justify-content:center;">
+      <div style="text-align:center;">
+        <span>Status</span>
+        <strong id="malfunctionStatus" style="color:var(--brand-mint)">Monitoring...</strong>
+      </div>
+    </div>
+  </article>
+
+  <article class="glass-card feature-card reveal">
+    <div class="card-heading">
+      <div>
+        <p class="muted">Live Assessment</p>
+        <h3>Self-Evaluation Tests</h3>
+      </div>
+      <div class="icon-chip">Test</div>
+    </div>
+    <div style="padding: 1.5rem;" id="testStatusBox" data-mcq-url="{% url 'generate_mcq' %}">
+        <div id="noTestMsg">
+            <p class="muted">No active test. Generate one from the study material above to begin.</p>
+        </div>
+    </div>
+  </article>
+</section>
+
+<div id="testModal" class="glass-card" style="display:none; position:fixed; top:5%; left:10%; right:10%; bottom:5%; z-index:1000; overflow-y:auto; padding:2rem; background: var(--surface-default);" data-submit-url="{% url 'submit_test' %}">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h2>📝 Live Test</h2>
+        <div>
+            <span class="chip-button" id="testTimerLabel">25:00</span>
+            <span class="icon-chip" id="testMalfunctionBadge" style="background:var(--brand-mint); color:#000;">Secure</span>
+        </div>
+    </div>
+    <div id="testQuestionsContainer" style="margin-top:20px;"></div>
+    <div class="button-row" style="margin-top:20px; justify-content:flex-end;">
+        <button id="submitTestButton" class="primary-button">Submit Test</button>
+    </div>
+</div>
+
+{% csrf_token %}
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/blazeface"></script>
+<script src="{% static 'js/dashboard.js' %}?v=20260403"></script>
+{% endblock %}

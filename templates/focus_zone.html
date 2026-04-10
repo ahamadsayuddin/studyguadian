@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Focus Zone | Adaptive Study Assistant{% endblock %}
+
+{% block content %}
+<article id="pomodoro" class="glass-card feature-card reveal" style="max-width: 600px; margin: 0 auto;">
+  <div class="card-heading">
+    <div>
+      <p class="muted">Pomodoro advanced</p>
+      <h3>Immersive focus timer</h3>
+    </div>
+    <div class="icon-chip">50</div>
+  </div>
+  <div class="timer-wrap">
+    <svg viewBox="0 0 220 220" class="timer-ring">
+      <circle cx="110" cy="110" r="90" class="timer-base"></circle>
+      <circle cx="110" cy="110" r="90" class="timer-progress" id="timerProgress"></circle>
+    </svg>
+    <div class="timer-copy">
+      <span id="timerMode">Study</span>
+      <strong id="timerLabel">25:00</strong>
+    </div>
+  </div>
+  <div class="button-row center">
+    <button class="chip-button active" data-preset="flow" type="button">25 / 5</button>
+    <button class="chip-button" data-preset="deep" type="button">50 / 10</button>
+  </div>
+  <div class="button-row">
+    <button type="button" class="primary-button" id="startTimerButton">Start Session</button>
+    <button type="button" class="secondary-button" id="resetTimerButton">Reset</button>
+  </div>
+</article>
+
+<section id="ambient" class="glass-card ambient-card reveal" style="margin-top: 2rem;">
+  <div class="section-heading">
+    <p class="muted">Ambient library</p>
+    <h3>Soundscapes for your next deep work block</h3>
+  </div>
+  <div class="ambient-list" id="ambientList"></div>
+</section>
+
+{{ ambient_tracks_json|json_script:"ambientTrackData" }}
+{% csrf_token %}
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/dashboard.js' %}?v=20260403"></script>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Dashboard | Adaptive Study Assistant{% endblock %}
+
+{% block content %}
+<section class="hero-panel glass-card reveal">
+  <div class="hero-copy">
+    <div class="hero-badge">AI-Powered Study Environment</div>
+    <h2>Analyse documents, generate tests, and focus deep.</h2>
+    <p>
+      Upload your study material, get instant simple explanations, and take self-assessment tests. 
+      Our Secure Testing module ensures focus by detecting distractions like mobile phones.
+    </p>
+    <div class="stat-grid">
+      <article class="stat-card">
+        <span>Today Focus</span>
+        <strong>{{ today_focus_minutes }} min</strong>
+      </article>
+      <article class="stat-card">
+        <span>Current Streak</span>
+        <strong>{{ streak_count }} days</strong>
+      </article>
+      <article class="stat-card">
+        <span>Docs Studied</span>
+        <strong id="docCountLabel">0</strong>
+      </article>
+    </div>
+  </div>
+  <div class="quote-panel">
+    <div class="quote-graphic" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <span class="muted">AI Reflection</span>
+    <h3>"{{ quote.content }}"</h3>
+    <p>{{ quote.author }}</p>
+    <div class="energy-bars">
+      <span style="height: 42%"></span>
+      <span style="height: 64%"></span>
+      <span style="height: 56%"></span>
+      <span style="height: 92%"></span>
+      <span style="height: 74%"></span>
+      <span style="height: 88%"></span>
+      <span style="height: 60%"></span>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/dashboard.js' %}?v=20260403"></script>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Guardian Connect | Adaptive Study Assistant{% endblock %}
+
+{% block content %}
+<section id="parent-updates" class="double-grid">
+  <article class="glass-card feature-card reveal">
+    <div class="card-heading">
+      <div>
+        <p class="muted">Parent visibility</p>
+        <h3>{{ message_channel_label }} update settings</h3>
+      </div>
+      <div class="icon-chip">{% if message_channel == "sms" %}SMS{% else %}WA{% endif %}</div>
+    </div>
+    {% if uses_whatsapp_sandbox %}
+    <div class="glass-card wa-connect-banner" style="margin: 1.5rem 0; padding: 1.25rem; border: 1px solid rgba(37, 211, 102, 0.3); background: rgba(37, 211, 102, 0.05); border-radius: 12px; position: relative; overflow: hidden;">
+      <div style="display: flex; align-items: start; gap: 1rem; position: relative; z-index: 2;">
+        <div style="background: #25D366; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+            <path d="M12.031 6.172c-2.32 0-4.591.905-6.396 2.548-1.805 1.643-2.8 3.82-2.8 6.132 0 1.22.25 2.408.736 3.487l-1.4 5.111 5.232-1.373c1.026.561 2.181.857 3.363.857 2.321 0 4.592-.905 6.396-2.548s2.8-3.82 2.8-6.132c0-2.312-.994-4.489-2.799-6.132-1.805-1.643-4.108-2.55-6.432-2.55zm6.183 12.193c-1.654 1.506-3.736 2.336-5.864 2.336-.931 0-1.848-.163-2.723-.483l-.333-.122-3.053.801.815-2.912-.136-.217c-.503-.804-.768-1.737-.768-2.698 0-1.895.819-3.679 2.306-5.031a8.42 8.42 0 0110.59 0c1.487 1.352 2.306 3.136 2.306 5.031 0 1.896-.819 3.681-2.306 5.031l.027-.003z"/>
+          </svg>
+        </div>
+        <div style="flex: 1;">
+          <h4 style="margin: 0 0 0.5rem 0; color: #25D366; font-size: 1rem;">WhatsApp Sandbox Connection</h4>
+          <p style="margin: 0 0 1rem 0; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.4;">
+            Updates pampali antey, ee number ki <strong>join instead-new</strong> ani message pampali. 
+            Ledha ee button click chesi direct pampochu:
+          </p>
+          <a href="https://wa.me/14155238886?text=join%20instead-new" target="_blank" style="display: inline-flex; align-items: center; background: #25D366; color: white; padding: 0.6rem 1.2rem; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.85rem; transition: transform 0.2s; gap: 8px;">
+            <span>Connect Now</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+          </a>
+        </div>
+      </div>
+      <div style="position: absolute; right: -20px; top: -20px; width: 100px; height: 100px; background: rgba(37, 211, 102, 0.05); border-radius: 50%; z-index: 1;"></div>
+    </div>
+    {% endif %}
+    <div class="inline-status" id="parentInlineStatus" hidden></div>
+    <form method="post" action="{% url 'update_parent_contact' %}" class="parent-form" id="parentContactForm">
+      {% csrf_token %}
+      <label>
+        <span>Parent {{ message_channel_label }} number</span>
+        {{ parent_contact_form.parent_whatsapp_number }}
+      </label>
+      <label class="checkbox-row">
+        {{ parent_contact_form.parent_updates_enabled }}
+        <span>Enable daily parent summaries</span>
+      </label>
+      <div class="button-row">
+        <button type="submit" class="primary-button">Save Parent Contact</button>
+      </div>
+    </form>
+    {% if whatsapp_delivery_note %}
+      <p class="parent-status" style="margin-top: 1rem; color: var(--text-secondary); font-size: 0.85rem;">{{ whatsapp_delivery_note }}</p>
+    {% endif %}
+  </article>
+
+  <article class="glass-card feature-card reveal">
+    <div class="card-heading">
+      <div>
+        <p class="muted">Daily summary</p>
+        <h3>Send today's progress</h3>
+      </div>
+      <div class="icon-chip">Send</div>
+    </div>
+    <p class="parent-note">
+      Summary includes test scores, study minutes, and recent in-app activity.
+    </p>
+    <form method="post" action="{% url 'send_parent_update' %}" id="parentSummaryForm">
+      {% csrf_token %}
+      <div class="button-row">
+        <button type="submit" class="secondary-button">Send Parent Update Now</button>
+      </div>
+    </form>
+    <form method="post" action="{% url 'send_test_parent_whatsapp' %}" id="parentTestForm">
+      {% csrf_token %}
+      <div class="button-row" style="margin-top: 1rem;">
+        <button type="submit" class="secondary-button">Send Test {{ message_channel_label }}</button>
+      </div>
+    </form>
+  </article>
+</section>
+
+{% csrf_token %}
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/dashboard.js' %}?v=20260403"></script>
+{% endblock %}

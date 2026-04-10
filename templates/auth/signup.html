@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up | Emotion-Aware Study Assistant{% endblock %}
+
+{% block guest_content %}
+<main class="auth-shell">
+  <section class="auth-hero glass-card">
+    <div class="hero-badge">Emotion + Productivity</div>
+    <h1>Build your premium AI-powered study workspace.</h1>
+    <p>
+      Create an account to unlock a dashboard that blends emotion insight, visual analytics, ambient soundscapes, and adaptive planning.
+    </p>
+    <div class="feature-grid">
+      <article>Dark and light futuristic themes</article>
+      <article>Portfolio-worthy interface</article>
+      <article>Emotion-guided study recommendations</article>
+      <article>Focus timer with smooth transitions</article>
+    </div>
+  </section>
+
+  <section class="auth-panel glass-card">
+    <div class="hero-badge">Create Account</div>
+    <h2>Launch your AI study space</h2>
+    <form method="post" class="auth-form">
+      {% csrf_token %}
+      {% for field in form %}
+        <label>
+          <span>{{ field.label }}</span>
+          {{ field }}
+          {% if field.errors %}
+            <small class="field-error">{{ field.errors|striptags }}</small>
+          {% endif %}
+        </label>
+      {% endfor %}
+      <button type="submit" class="primary-button">Create account</button>
+    </form>
+    <p class="auth-switch">Already have an account? <a href="{% url 'login' %}">Sign in</a></p>
+  </section>
+</main>
+{% endblock %}
